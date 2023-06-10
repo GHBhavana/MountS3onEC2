@@ -1,0 +1,28 @@
+Mount S3 bucket onEC2 instance
+
+--->create instance 	[instance_for_s3_mounting]
+--->create iam role as 	[s3full_for_mountingOn_instance]
+	attach this role to instace created
+--->create s3 bucket	[bucket-forec2-mounting]
+--->take SSH of instance through mobaxterm
+		# yum update -y
+		# yum install awscli -y
+		# sudo yum install automake fuse fuse-devel gcc-c++ git libcurl-devel libxml2-devel make openssl-devel
+		# git clone https://github.com/s3fs-fuse/s3fs-fuse.git
+		# cd s3fs-fuse
+		# ./autogen.sh
+		# ./configure --prefix=/usr --with-openssl
+		# sudo make install
+		# which s3fs
+		# touch /etc/passwd-s3fs
+		# vim /etc/passwd-s3fs 
+			===>> enter access_key:secret_key and save
+		# sudo chmod 600 /etc/passwd-s3fs
+		# mkdir /mybucket
+		# s3fs bucket-for-ec2-mounting -o use_cache=/tmp -o uid=1001 -o mp_umask=002 /mybucket
+				{for mounting}
+		# df -hT  {here your mounted bucket will show}
+
+Now try creating file here and check in aws bucket through console
+upload file in bucket and check on mobaxterm
+
